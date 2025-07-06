@@ -47,6 +47,10 @@ void showLoggedInOptions();
 // Feature Interfaces
 void showSendMoneyInterface();
 
+//Add money interface 
+
+void showAddMoneyInterface();
+
 // =====================
 // Function Definitions
 // =====================
@@ -106,7 +110,7 @@ void showLoggedInOptions() {
                 showSendMoneyInterface();
                 break;
             case 2:
-                printf("\n--- Add Money ---\n");
+                showAddMoneyInterface();
                 break;
             case 3:
                 printf("\n--- Mobile Recharge ---\n");
@@ -152,6 +156,46 @@ void showSendMoneyInterface() {
     printf("Enter PIN to confirm: ");
     scanf("%d", &pin);
 }
+
+
+// ---------------------
+// Feature Interfaces Add Money
+// ---------------------
+
+void showAddMoneyInterface() {
+    float amount;
+    int pin;
+
+    printf("\n--- Add Money ---\n");
+    printf("Enter amount to add: ");
+    scanf("%f", &amount);
+    printf("Enter PIN to confirm: ");
+    scanf("%d", &pin);
+
+    if (pin != users[loggedInUserIndex].pin) {
+        printf("Incorrect PIN. Transaction cancelled.\n");
+        return;
+    }
+
+    if (amount <= 0) {
+        printf("Invalid amount. Must be greater than 0.\n");
+        return;
+    }
+
+    users[loggedInUserIndex].balance += amount;
+
+    // Log the transaction
+    if (transactionCount < MAX_TRANSACTIONS) {
+        strcpy(transactions[transactionCount].type, "Add Money");
+        transactions[transactionCount].amount = amount;
+        strcpy(transactions[transactionCount].target, users[loggedInUserIndex].number);
+        transactionCount++;
+    }
+
+    printf("Amount added successfully. New Balance: %.2f\n", users[loggedInUserIndex].balance);
+}
+
+
 
 // =====================
 // Main Function
