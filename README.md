@@ -1,8 +1,8 @@
-# Mobile Baking Dial System in C
+# Mobile Banking Dial System in C
 
 ## Project Overview
 
-This project simulates a simplified **mobile baking dial system** similar to the bKash USSD menu, implemented in C programming language. It provides a console-based menu system that allows users to perform common mobile financial transactions, such as sending money, mobile recharge, payment, cash out, and more.
+This project simulates a simplified **mobile banking dial system** similar to the bKash USSD menu, implemented in C programming language. It provides a console-based menu system that allows users to perform common mobile financial transactions, such as sending money, mobile recharge, payment, cash out, and more.
 
 ---
 
