@@ -125,7 +125,7 @@ void showLoggedInOptions() {
         printf("3. Mobile Recharge\n");
         printf("4. Payment\n");
         printf("5. Cash Out\n");
-        printf("6. My bKash\n");
+        printf("6. My crystalPay\n");
         printf("7. Reset PIN\n");
         printf("8. Logout\n");
         printf("Enter choice: ");
@@ -148,7 +148,7 @@ void showLoggedInOptions() {
                 showCashOutInterface();
                 break;
             case 6:
-                printf("\n--- My bKash ---\n");
+                printf("\n--- My crystalPay ---\n");
                 break;
             case 7:
                 printf("\n--- Reset PIN ---\n");
@@ -173,7 +173,7 @@ void showSendMoneyInterface() {
     int pin;
 
     printf("\n=== Send Money ===\n\n");
-    printf("Enter receiver bKash account no: ");
+    printf("Enter receiver crystalPay account no: ");
     scanf("%s", receiver);
     printf("Enter amount: ");
     scanf("%f", &amount);
@@ -198,80 +198,35 @@ void showAddMoneyInterface() {
 
     printf("\n--- Add Money ---\n");
     printf("Select Source:\n");
-    printf("1. Card to bKash\n");
-    printf("2. Bank to bKash\n");
+    printf("1. Card to crystalPay\n");
+    printf("2. Bank to crystalPay\n");
     printf("Enter choice: ");
     scanf("%d", &sourceChoice);
 
-    printf("Enter account/card number: ");
+    if(sourceChoice == 1) {
+        printf("Enter card number: ");
+    }else {
+        printf("Enter account number: ");
+    }
     scanf("%s", inputNumber);
-    printf("Enter PIN: ");
-    scanf("%d", &pin);
     printf("Enter amount to add: ");
     scanf("%f", &amount);
+    printf("Enter PIN: ");
+    scanf("%d", &pin);
 
     if (amount <= 0) {
         printf("Invalid amount.\n");
         return;
     }
 
-    if (sourceChoice == 1) {
-        // Card to bKash
-        for (int i = 0; i < cardCount; i++) {
-            if (strcmp(cards[i].cardNumber, inputNumber) == 0 && cards[i].pin == pin) {
-                found = 1;
-                if (cards[i].balance >= amount) {
-                    cards[i].balance -= amount;
-                    users[loggedInUserIndex].balance += amount;
-
-                    // Log transaction
-                    if (transactionCount < MAX_TRANSACTIONS) {
-                        strcpy(transactions[transactionCount].type, "Add from Card");
-                        transactions[transactionCount].amount = amount;
-                        strcpy(transactions[transactionCount].target, users[loggedInUserIndex].number);
-                        transactionCount++;
-                    }
-
-                    printf("Amount added from card. New bKash balance: %.2f\n", users[loggedInUserIndex].balance);
-                } else {
-                    printf("Insufficient card balance.\n");
-                }
-                break;
-            }
-        }
-        if (!found) {
-            printf("Card number or PIN invalid.\n");
-        }
-    } else if (sourceChoice == 2) {
-        // Bank to bKash
-        for (int i = 0; i < bankCount; i++) {
-            if (strcmp(banks[i].accountNumber, inputNumber) == 0 && banks[i].pin == pin) {
-                found = 1;
-                if (banks[i].balance >= amount) {
-                    banks[i].balance -= amount;
-                    users[loggedInUserIndex].balance += amount;
-
-                    // Log transaction
-                    if (transactionCount < MAX_TRANSACTIONS) {
-                        strcpy(transactions[transactionCount].type, "Add from Bank");
-                        transactions[transactionCount].amount = amount;
-                        strcpy(transactions[transactionCount].target, users[loggedInUserIndex].number);
-                        transactionCount++;
-                    }
-
-                    printf("Amount added from bank. New bKash balance: %.2f\n", users[loggedInUserIndex].balance);
-                } else {
-                    printf("Insufficient bank account balance.\n");
-                }
-                break;
-            }
-        }
-        if (!found) {
-            printf("Bank account number or PIN invalid.\n");
-        }
-    } else {
+    if(sourceChoice > 2 || sourceChoice < 1) {
         printf("Invalid source choice.\n");
+        return;
     }
+    users[loggedInUserIndex].balance += amount;
+    printf("\n\n");
+    printf("Successfully added amount - %f from account - %s \n", amount, inputNumber);
+    printf("Current balance is - %f \n\n", users[loggedInUserIndex].balance);
 }
 
 
@@ -320,7 +275,7 @@ void showPaymentInterface() {
 
 
 //------------------------
-//cashout Interface 
+//cash out Interface 
 //------------------------
 
 void showCashOutInterface() {
@@ -365,28 +320,11 @@ void showCashOutInterface() {
 // =====================
 
 void initializeDummyUsers() {
-    strcpy(users[0].number, "01786542643");
+    strcpy(users[0].number, "017");
     users[0].pin = 1111;
     users[0].balance = 5000;
     userCount++;
 }
-
-// Dummy Cards & Banks
-void initializeDummyAccounts() {
-   
-    strcpy(cards[0].cardNumber, "1234567890123456");
-    cards[0].pin = 2242;
-    cards[0].balance = 10000;
-    cardCount++;
- 
-    strcpy(banks[0].accountNumber, "9876543210");
-    banks[0].pin = 2250;
-    banks[0].balance = 20000;
-    bankCount++;
-}
-
-
-
 
 int main() {
     int choice;
