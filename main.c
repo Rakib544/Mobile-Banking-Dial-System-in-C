@@ -73,13 +73,14 @@ void showLoginForm() {
     char number[12];
     int pin;
 
+    printf("\n\n === Login to your account ===\n\n");
     printf("Enter your number: ");
     scanf("%s", number);
     printf("Enter your pin: ");
     scanf("%d", &pin);
 
     if (login(number, pin)) {
-        printf("\n\nYou have logged in successfully.\n\n");
+        printf("\nYou have logged in successfully.\n\n");
         showLoggedInOptions();
     } else {
         printf("Number or PIN invalid.\n");
@@ -146,7 +147,7 @@ void showSendMoneyInterface() {
     char reference[50];
     int pin;
 
-    printf("\n--- Send Money ---\n");
+    printf("\n=== Send Money ===\n\n");
     printf("Enter receiver bKash account no: ");
     scanf("%s", receiver);
     printf("Enter amount: ");
@@ -155,6 +156,7 @@ void showSendMoneyInterface() {
     scanf("%s", reference);
     printf("Enter PIN to confirm: ");
     scanf("%d", &pin);
+    printf("\n\nMoney sent successfully.\n\n");
 }
 
 
