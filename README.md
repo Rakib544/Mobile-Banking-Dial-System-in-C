@@ -1,5 +1,7 @@
 # Mobile Banking Dial System in C
 
+<img src="logo.png" width="150" style="display:block; margin: 0 auto;" alt="Crystal Pay (Mobile Banking Dial System)" />
+
 ## Project Overview
 
 This project simulates a simplified **mobile banking dial system** similar to the bKash USSD menu, implemented in C programming language. It provides a console-based menu system that allows users to perform common mobile financial transactions, such as sending money, mobile recharge, payment, cash out, and more.
