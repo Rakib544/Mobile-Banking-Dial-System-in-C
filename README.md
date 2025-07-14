@@ -1,6 +1,8 @@
 # Mobile Banking Dial System in C
 
-<img src="logo.png" width="150" style="display:block; margin: 0 auto;" alt="Crystal Pay (Mobile Banking Dial System)" />
+<p align="center">
+    <img src="logo.png" width="150" alt="Crystal Pay (Mobile Banking Dial System)" />
+</p>
 
 ## Project Overview
 
