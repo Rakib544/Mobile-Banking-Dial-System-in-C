@@ -17,7 +17,7 @@ This project simulates a simplified **mobile banking dial system** similar to th
 - **Mobile Recharge:** Recharge mobile numbers.
 - **Payment:** Make payments to merchants.
 - **Cash Out:** Withdraw money through agents.
-- **My bKash:** View current balance and transaction history.
+- **My CrystalPay:** View current balance and transaction history.
 - **Reset PIN:** Change the user PIN securely.
 - **Add Money:** Add money to the account balance.
 - **Logout:** Securely logout from the session.
@@ -43,6 +43,7 @@ gcc main.c -o main.exe && main.exe
 
 ## Contributors
 
+- Din Islam (Student Id - 42250102236, Northern University Bangladesh.)
 - Rakib (Student Id - 42250102242, Northern University Bangladesh)
 - Ruman Hossain (Student Id - 42250102250, Northern University Bangladesh.)
 - Md. Rakib Hossain (Student Id - 42250102258, Northern University Bangladesh.)
