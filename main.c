@@ -39,24 +39,18 @@ int loggedInUserIndex = -1;
 // =====================
 // Function Prototypes
 // =====================
-
-// Authentication
-void showLoginInterface();
-int login(char *number, int pin);
-
-// Main Logged-in Menu
-void showLoggedInOptions();
 void showSendMoneyInterface();
 void showAddMoneyInterface();
 void showPaymentInterface();
 void showCashOutInterface();
 void showTransactionInterface();
-
+void showLoginInterface();
+int login(char *number, int pin);
+void showLoggedInOptions();
 
 // =====================
 // Function Definitions
 // =====================
-
 int login(char *number, int pin) {
     for (int i = 0; i < userCount; i++) {
         if (strcmp(users[i].number, number) == 0 && users[i].pin == pin) {
@@ -71,24 +65,6 @@ int login(char *number, int pin) {
 // =====================
 // Interfaces
 // =====================
-
-void showLoginInterface() {
-    char number[12];
-    int pin;
-
-    printf("\n\n === Login to your account ===\n\n");
-    printf("Enter your number: ");
-    scanf("%s", number);
-    printf("Enter your pin: ");
-    scanf("%d", &pin);
-
-    if (login(number, pin)) {
-        printf("\nYou have logged in successfully.\n\n");
-        showLoggedInOptions();
-    } else {
-        printf("\nNumber or PIN invalid.\n\n");
-    }
-}
 
 void showLoggedInOptions() {
     int choice;
@@ -140,9 +116,25 @@ void showLoggedInOptions() {
     }
 }
 
-// ---------------------
-// Feature Interfaces
-// ---------------------
+void showLoginInterface() {
+    char number[12];
+    int pin;
+
+    printf("\n=== Login to Your Account ===\n\n");
+
+    printf("Enter your number: ");
+    scanf("%11s", number);
+
+    printf("Enter your PIN: ");
+    scanf("%d", &pin);
+
+    if (login(number, pin)) {
+        printf("\nYou have logged in successfully.\n\n");
+        showLoggedInOptions();
+    } else {
+        printf("\nNumber or PIN invalid.\n\n");
+    }
+}
 
 void showSendMoneyInterface() {
     char receiver[12];
