@@ -21,19 +21,7 @@ struct Transaction {
     char type[20];
     float amount;
     char target[12]; // 11-digit number + null terminator
-};
-
-
-struct Card {
-    char cardNumber[20];
-    int pin;
-    float balance;
-};
-
-struct BankAccount {
-    char accountNumber[20];
-    int pin;
-    float balance;
+    char reference[50];
 };
 
 // =====================
@@ -63,16 +51,12 @@ void showLoggedInOptions();
 void showSendMoneyInterface();
 
 //Add money interface 
-
 void showAddMoneyInterface();
 
 // Marchent Payment system 
-
 void showPaymentInterface();
 
-
 //cashout Interface
-
 void showCashOutInterface();
 
 
@@ -108,7 +92,7 @@ void showLoginForm() {
         printf("\nYou have logged in successfully.\n\n");
         showLoggedInOptions();
     } else {
-        printf("Number or PIN invalid.\n");
+        printf("\nNumber or PIN invalid.\n\n");
     }
 }
 
@@ -154,10 +138,10 @@ void showLoggedInOptions() {
                 printf("\n--- Reset PIN ---\n");
                 break;
             case 8:
-                printf("Logging out...\n");
+                printf("\nLogging out...\n");
                 return;
             default:
-                printf("Invalid choice. Try again.\n\n");
+                printf("\nInvalid choice. Try again.\n\n");
         }
     }
 }
@@ -172,16 +156,62 @@ void showSendMoneyInterface() {
     char reference[50];
     int pin;
 
-    printf("\n=== Send Money ===\n\n");
-    printf("Enter receiver crystalPay account no: ");
+    printf("\n--- Send Money ---\n\n");
+
+    printf("Enter receiver account number: ");
     scanf("%s", receiver);
+
     printf("Enter amount: ");
     scanf("%f", &amount);
+
+    if (amount <= 0) {
+        printf("\nInvalid amount. Please enter a positive value.\n");
+        return;
+    }
+
+    if (amount > users[loggedInUserIndex].balance) {
+        printf("\nTransaction failed: Insufficient balance.\n");
+        return;
+    }
+
     printf("Enter reference: ");
     scanf("%s", reference);
+
     printf("Enter PIN to confirm: ");
     scanf("%d", &pin);
-    printf("\n\nMoney sent successfully.\n\n");
+
+    int receiverIndex = -1;
+    for (int i = 0; i < userCount; i++) {
+        if (strcmp(users[i].number, receiver) == 0) {  
+            receiverIndex = i;
+            break;  
+        }
+    }
+
+    if (receiverIndex == -1) {
+        printf("\nTransaction failed: Invalid receiver account number.\n");
+        return;
+    }
+
+    if (users[loggedInUserIndex].pin != pin) {
+        printf("\nTransaction failed: Incorrect PIN.\n");
+        return;
+    }
+
+    users[receiverIndex].balance += amount;
+    users[loggedInUserIndex].balance -= amount;
+
+    strcpy(transactions[transactionCount].type, "Sent Money");
+    transactions[transactionCount].amount = amount;
+    strcpy(transactions[transactionCount].target, receiver);
+    strcpy(transactions[transactionCount].reference, reference);
+    transactionCount++;
+
+    printf("\nTransaction successful.\n");
+    printf("Receiver: %s\n", receiver);
+    printf("Amount Sent: %.2f\n", amount);
+    printf("Reference: %s\n", reference);
+    printf("Your New Balance: %.2f\n\n", users[loggedInUserIndex].balance);
 }
 
 
@@ -320,10 +350,20 @@ void showCashOutInterface() {
 // =====================
 
 void initializeDummyUsers() {
-    strcpy(users[0].number, "017");
-    users[0].pin = 1111;
-    users[0].balance = 5000;
-    userCount++;
+    struct User dummy[] = {
+        {"01786542643", 1111, 5000},
+        {"01857376609", 2222, 7000},
+        {"01309179368", 3333, 10000},
+        {"01792456904", 4444, 6000}
+    };
+
+    int n = sizeof(dummy) / sizeof(dummy[0]);
+    for(int i = 0; i < n; i++) {
+        strcpy(users[i].number, dummy[i].number);
+        users[i].pin = dummy[i].pin;
+        users[i].balance = dummy[i].balance;
+        userCount++;
+    }
 }
 
 int main() {
@@ -343,7 +383,7 @@ int main() {
                 showLoginForm();
                 break;
             case 0:
-                printf("Exiting program...\n");
+                printf("\nExiting program...\n");
                 exit(0);
             default:
                 printf("Invalid choice. Try again.\n\n");
