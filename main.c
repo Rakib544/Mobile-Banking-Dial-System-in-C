@@ -47,6 +47,7 @@ void showTransactionInterface();
 void showLoginInterface();
 int login(char *number, int pin);
 void showLoggedInOptions();
+void showMobileRechargeInterface();
 
 // =====================
 // Function Definitions
@@ -90,7 +91,7 @@ void showLoggedInOptions() {
                 showAddMoneyInterface();
                 break;
             case 3:
-                printf("\n--- Mobile Recharge ---\n");
+                showMobileRechargeInterface();
                 break;
             case 4:
                 showPaymentInterface();
@@ -135,6 +136,66 @@ void showLoginInterface() {
         printf("\nNumber or PIN invalid.\n\n");
     }
 }
+
+void showMobileRechargeInterface() {
+    if (loggedInUserIndex == -1) {
+        printf("\nYou must log in first!\n");
+        return;
+    }
+
+    char mobileNumber[12];
+    float amount;
+    int enteredPin;
+
+    printf("\n--- Mobile Recharge ---\n");
+    printf("Enter mobile number (11 digits): ");
+    scanf("%s", mobileNumber);
+
+    // Validate number length
+    if (strlen(mobileNumber) != 11) {
+        printf("Invalid mobile number! Must be 11 digits.\n");
+        return;
+    }
+
+    printf("Enter recharge amount: ");
+    scanf("%f", &amount);
+
+    if (amount <= 0) {
+        printf("Invalid amount!\n");
+        return;
+    }
+
+    if (users[loggedInUserIndex].balance < amount) {
+        printf("Insufficient balance!\n");
+        return;
+    }
+
+    // Ask for PIN
+    printf("Enter your PIN to confirm: ");
+    scanf("%d", &enteredPin);
+
+    if (enteredPin != users[loggedInUserIndex].pin) {
+        printf("Invalid PIN! Recharge cancelled.\n");
+        return;
+    }
+
+    // Deduct balance
+    users[loggedInUserIndex].balance -= amount;
+
+    // Save transaction
+    if (transactionCount < MAX_TRANSACTIONS) {
+        strcpy(transactions[transactionCount].type, "Mobile Recharge");
+        transactions[transactionCount].amount = amount;
+        strcpy(transactions[transactionCount].target, mobileNumber);
+        strcpy(transactions[transactionCount].reference, "Recharge successful");
+        transactionCount++;
+    }
+
+    printf("\nRecharge of %.2f to %s successful!\n", amount, mobileNumber);
+    printf("Remaining Balance: %.2f\n", users[loggedInUserIndex].balance);
+}
+
+
 
 void showSendMoneyInterface() {
     char receiver[12];
