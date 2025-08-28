@@ -235,9 +235,15 @@ void showAddMoneyInterface() {
         return;
     }
     users[loggedInUserIndex].balance += amount;
-    printf("\n\n");
-    printf("Successfully added amount - %f from account - %s \n", amount, inputNumber);
-    printf("Current balance is - %f \n\n", users[loggedInUserIndex].balance);
+    transactions[transactionCount].amount = amount;
+    strcpy(transactions[transactionCount].type, "Add Money");
+    strcpy(transactions[transactionCount].target, inputNumber);
+    transactionCount++;
+    
+    printf("\nTransaction successful.\n");
+    printf("Account Number: %s\n", inputNumber);
+    printf("Amount Added: %.2f\n", amount);
+    printf("Your New Balance: %.2f\n\n", users[loggedInUserIndex].balance);
 }
 
 void showPaymentInterface() {
