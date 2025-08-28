@@ -239,7 +239,7 @@ void showAddMoneyInterface() {
     strcpy(transactions[transactionCount].type, "Add Money");
     strcpy(transactions[transactionCount].target, inputNumber);
     transactionCount++;
-    
+
     printf("\nTransaction successful.\n");
     printf("Account Number: %s\n", inputNumber);
     printf("Amount Added: %.2f\n", amount);
@@ -265,22 +265,27 @@ void showPaymentInterface() {
         return;
     }
 
-    if (amount <= 0 || amount > users[loggedInUserIndex].balance) {
-        printf("Invalid amount or insufficient balance.\n");
+    if (amount <= 0) {
+        printf("\nTransaction Failed: Invalid amount.\n");
         return;
+    }
+
+    if(amount > users[loggedInUserIndex].balance) {
+         printf("\nTransaction failed: Insufficient balance.\n");
+         return;
     }
 
     users[loggedInUserIndex].balance -= amount;
 
-    // Log transaction
-    if (transactionCount < MAX_TRANSACTIONS) {
-        strcpy(transactions[transactionCount].type, "Payment");
-        transactions[transactionCount].amount = amount;
-        strcpy(transactions[transactionCount].target, merchantNumber);
-        transactionCount++;
-    }
+    strcpy(transactions[transactionCount].type, "Payment");
+    transactions[transactionCount].amount = amount;
+    strcpy(transactions[transactionCount].target, merchantNumber);
+    transactionCount++;
 
-    printf("Payment successful to merchant %s. New Balance: %.2f\n", merchantNumber, users[loggedInUserIndex].balance);
+    printf("\nPayment successful.\n");
+    printf("Receiver: %s\n", merchantNumber);
+    printf("Amount Sent: %.2f\n", amount);
+    printf("Your New Balance: %.2f\n\n", users[loggedInUserIndex].balance);
 }
 
 void showCashOutInterface() {
