@@ -313,15 +313,15 @@ void showCashOutInterface() {
 
     users[loggedInUserIndex].balance -= amount;
 
-    // Log the transaction
-    if (transactionCount < MAX_TRANSACTIONS) {
-        strcpy(transactions[transactionCount].type, "Cash Out");
-        transactions[transactionCount].amount = amount;
-        strcpy(transactions[transactionCount].target, agentNumber);
-        transactionCount++;
-    }
+    strcpy(transactions[transactionCount].type, "Cash Out");
+    transactions[transactionCount].amount = amount;
+    strcpy(transactions[transactionCount].target, agentNumber);
+    transactionCount++;
 
-    printf("Cash out successful to agent %s. New Balance: %.2f\n", agentNumber, users[loggedInUserIndex].balance);
+    printf("\nCash out successful.\n");
+    printf("Receiver: %s\n", agentNumber);
+    printf("Amount Sent: %.2f\n", amount);
+    printf("Your New Balance: %.2f\n\n", users[loggedInUserIndex].balance);
 }
 
 void showTransactionInterface() {
