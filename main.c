@@ -41,32 +41,21 @@ int loggedInUserIndex = -1;
 // =====================
 
 // Authentication
-void showLoginForm();
+void showLoginInterface();
 int login(char *number, int pin);
 
 // Main Logged-in Menu
 void showLoggedInOptions();
-
-// Feature Interfaces
 void showSendMoneyInterface();
-
-//Add money interface 
 void showAddMoneyInterface();
-
-// Marchent Payment system 
 void showPaymentInterface();
-
-//cashout Interface
 void showCashOutInterface();
+void showTransactionInterface();
 
 
 // =====================
 // Function Definitions
 // =====================
-
-// ---------------------
-// Authentication
-// ---------------------
 
 int login(char *number, int pin) {
     for (int i = 0; i < userCount; i++) {
@@ -78,7 +67,12 @@ int login(char *number, int pin) {
     return 0;
 }
 
-void showLoginForm() {
+
+// =====================
+// Interfaces
+// =====================
+
+void showLoginInterface() {
     char number[12];
     int pin;
 
@@ -96,10 +90,6 @@ void showLoginForm() {
     }
 }
 
-// ---------------------
-// Main Logged-in Menu
-// ---------------------
-
 void showLoggedInOptions() {
     int choice;
     while (1) {
@@ -111,7 +101,8 @@ void showLoggedInOptions() {
         printf("5. Cash Out\n");
         printf("6. My crystalPay\n");
         printf("7. Reset PIN\n");
-        printf("8. Logout\n");
+        printf("8. Transactions\n");
+        printf("9. Logout\n");
         printf("Enter choice: ");
         scanf("%d", &choice);
 
@@ -138,6 +129,9 @@ void showLoggedInOptions() {
                 printf("\n--- Reset PIN ---\n");
                 break;
             case 8:
+                showTransactionInterface();
+                return;
+            case 9:
                 printf("\nLogging out...\n");
                 return;
             default:
@@ -214,11 +208,6 @@ void showSendMoneyInterface() {
     printf("Your New Balance: %.2f\n\n", users[loggedInUserIndex].balance);
 }
 
-
-// ---------------------
-// Feature Interfaces Add Money
-// ---------------------
-
 void showAddMoneyInterface() {
     int sourceChoice;
     float amount;
@@ -259,13 +248,6 @@ void showAddMoneyInterface() {
     printf("Current balance is - %f \n\n", users[loggedInUserIndex].balance);
 }
 
-
-
-// ---------------------
-// Feature Interfaces Add Money
-// ---------------------
-
-
 void showPaymentInterface() {
     char merchantNumber[12];
     float amount;
@@ -303,11 +285,6 @@ void showPaymentInterface() {
     printf("Payment successful to merchant %s. New Balance: %.2f\n", merchantNumber, users[loggedInUserIndex].balance);
 }
 
-
-//------------------------
-//cash out Interface 
-//------------------------
-
 void showCashOutInterface() {
     char agentNumber[12];
     float amount;
@@ -344,6 +321,24 @@ void showCashOutInterface() {
     printf("Cash out successful to agent %s. New Balance: %.2f\n", agentNumber, users[loggedInUserIndex].balance);
 }
 
+void showTransactionInterface() {
+    if (transactionCount <= 0) {
+        printf("\nNo transaction history found.\n");
+    } else {
+        printf("\n=========== Transaction History ===========\n\n");
+
+        for (int i = 0; i < transactionCount; i++) {
+            printf("Transaction #%d\n", i + 1);
+            printf("Type      : %s\n", transactions[i].type);
+            printf("Receiver  : %s\n", transactions[i].target);
+            printf("Amount    : %.2f\n", transactions[i].amount);
+            printf("Reference : %s\n", transactions[i].reference);
+            printf("-------------------------------------------\n");
+        }
+    }
+
+    showLoggedInOptions();
+}
 
 // =====================
 // Main Function
@@ -380,7 +375,7 @@ int main() {
 
         switch (choice) {
             case 1:
-                showLoginForm();
+                showLoginInterface();
                 break;
             case 0:
                 printf("\nExiting program...\n");
