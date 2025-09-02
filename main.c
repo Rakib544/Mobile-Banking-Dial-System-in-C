@@ -49,6 +49,7 @@ int login(char *number, int pin);
 void showLoggedInOptions();
 void showMobileRechargeInterface();
 void showResetPinInterface();
+void showCrystalPayInterface();
 
 // =====================
 // Function Definitions
@@ -101,7 +102,7 @@ void showLoggedInOptions() {
                 showCashOutInterface();
                 break;
             case 6:
-                printf("\n--- My crystalPay ---\n");
+                showCrystalPayInterface();
                 break;
             case 7:
                 showResetPinInterface();
@@ -153,6 +154,15 @@ void showResetPinInterface() {
     }else {
         printf("\nOops! You Entered Wrong Pin. \nPlease Contact our Customer Help Service.\nThanks For Using Crystal Pay.\n\n");
     }
+}
+
+void showCrystalPayInterface() {
+    printf ("\n== My Crystal Pay ==\n");
+    printf ("\n----Assalamualikum----\n");
+    printf ("\nYour Remaining Account Balance is TK- %.2f", users[loggedInUserIndex].balance);
+
+    printf ("\nThank you for using Crystal Pay. Download our apps for better experience.\n\n\n");
+
 }
 
 void showMobileRechargeInterface() {
