@@ -48,6 +48,7 @@ void showLoginInterface();
 int login(char *number, int pin);
 void showLoggedInOptions();
 void showMobileRechargeInterface();
+void showResetPinInterface();
 
 // =====================
 // Function Definitions
@@ -103,7 +104,7 @@ void showLoggedInOptions() {
                 printf("\n--- My crystalPay ---\n");
                 break;
             case 7:
-                printf("\n--- Reset PIN ---\n");
+                showResetPinInterface();
                 break;
             case 8:
                 showTransactionInterface();
@@ -134,6 +135,23 @@ void showLoginInterface() {
         showLoggedInOptions();
     } else {
         printf("\nNumber or PIN invalid.\n\n");
+    }
+}
+
+void showResetPinInterface() {
+    int oldPin;
+    printf("Enter Your Old Pin : ");
+    scanf("%d", &oldPin);
+
+    if(oldPin == users[loggedInUserIndex].pin) {
+        int newPin;
+        printf("\nEnter Your 4 Digit New Pin : ");
+        scanf("%d", &newPin);
+        users[loggedInUserIndex].pin = newPin;
+        printf("\nYour Pin Changed Successfully\n");
+        printf("Your New Pin Is : %d", newPin);
+    }else {
+        printf("\nOops! You Entered Wrong Pin. \nPlease Contact our Customer Help Service.\nThanks For Using Crystal Pay.\n\n");
     }
 }
 
@@ -229,9 +247,9 @@ void showSendMoneyInterface() {
 
     int receiverIndex = -1;
     for (int i = 0; i < userCount; i++) {
-        if (strcmp(users[i].number, receiver) == 0) {  
+        if (strcmp(users[i].number, receiver) == 0) {
             receiverIndex = i;
-            break;  
+            break;
         }
     }
 
