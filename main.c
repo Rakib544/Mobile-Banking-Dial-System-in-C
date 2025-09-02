@@ -80,7 +80,7 @@ void showLoggedInOptions() {
         printf("5. Cash Out\n");
         printf("6. My crystalPay\n");
         printf("7. Reset PIN\n");
-        printf("8. Transactions\n");
+        printf("8. Statement\n");
         printf("9. Logout\n");
         printf("Enter choice: ");
         scanf("%d", &choice);
