@@ -432,7 +432,6 @@ void showTransactionInterface() {
         }
     }
     printf("\n");
-    showLoggedInOptions();
 }
 
 // =====================
