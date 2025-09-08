@@ -72,17 +72,17 @@ int login(char *number, int pin) {
 void showLoggedInOptions() {
     int choice;
     while (1) {
-        printf("\n=== Payment Management System ===\n");
+        printf("\n============ Payment System ============ \n");
         printf("1. Send Money\n");
         printf("2. Add Money\n");
         printf("3. Mobile Recharge\n");
         printf("4. Payment\n");
         printf("5. Cash Out\n");
-        printf("6. My crystalPay\n");
+        printf("6. My Crystal Pay\n");
         printf("7. Reset PIN\n");
         printf("8. Statement\n");
         printf("9. Logout\n");
-        printf("Enter choice: ");
+        printf("\nEnter choice: \n");
         scanf("%d", &choice);
 
         switch (choice) {
@@ -109,12 +109,12 @@ void showLoggedInOptions() {
                 break;
             case 8:
                 showTransactionInterface();
-                return;
+                break;
             case 9:
-                printf("\nLogging out...\n");
+                printf("\nLogging out...\n\n");
                 return;
             default:
-                printf("\nInvalid choice. Try again.\n\n");
+                printf("\nError: Invalid choice. Try again.\n\n");
         }
     }
 }
@@ -123,51 +123,49 @@ void showLoginInterface() {
     char number[12];
     int pin;
 
-    printf("\n=== Login to Your Account ===\n\n");
-
-    printf("Enter your number: ");
+    printf("\n============== Login ============== \n");
+    printf("\nEnter your number: \n");
     scanf("%11s", number);
 
-    printf("Enter your PIN: ");
+    printf("\nEnter your PIN: \n");
     scanf("%d", &pin);
 
     if (login(number, pin)) {
-        printf("\nYou have logged in successfully.\n\n");
+        printf("\nLogin successful!\n\n");
         showLoggedInOptions();
     } else {
-        printf("\nNumber or PIN invalid.\n\n");
+        printf("\nError: Invalid number or PIN.\n\n");
     }
 }
 
 void showResetPinInterface() {
     int oldPin;
-    printf("Enter Your Old Pin : ");
+    printf("\n=========== Reset PIN ============ \n");
+    printf("\nEnter your old PIN: \n");
     scanf("%d", &oldPin);
 
-    if(oldPin == users[loggedInUserIndex].pin) {
+    if (oldPin == users[loggedInUserIndex].pin) {
         int newPin;
-        printf("\nEnter Your 4 Digit New Pin : ");
+        printf("\nEnter your new 4-digit PIN: \n");
         scanf("%d", &newPin);
         users[loggedInUserIndex].pin = newPin;
-        printf("\nYour Pin Changed Successfully\n");
-        printf("Your New Pin Is : %d", newPin);
-    }else {
-        printf("\nOops! You Entered Wrong Pin. \nPlease Contact our Customer Help Service.\nThanks For Using Crystal Pay.\n\n");
+        printf("\nPIN changed successfully!\n");
+        printf("New PIN: %d\n\n", newPin);
+    } else {
+        printf("\nError: Incorrect old PIN. Contact customer support.\n\n");
     }
 }
 
 void showCrystalPayInterface() {
-    printf ("\n== My Crystal Pay ==\n");
-    printf ("\n----Assalamualikum----\n");
-    printf ("\nYour Remaining Account Balance is TK- %.2f", users[loggedInUserIndex].balance);
-
-    printf ("\nThank you for using Crystal Pay. Download our apps for better experience.\n\n\n");
-
+    printf("\n========= My Crystal Pay ========= \n");
+    printf("\nRemaining Balance: %.2f TK\n", users[loggedInUserIndex].balance);
+    printf("\nThank you for using Crystal Pay.\n");
+    printf("Download our mobile app for a better experience.\n\n");
 }
 
 void showMobileRechargeInterface() {
     if (loggedInUserIndex == -1) {
-        printf("\nYou must log in first!\n");
+        printf("\nError: You must log in first!\n\n");
         return;
     }
 
@@ -175,42 +173,38 @@ void showMobileRechargeInterface() {
     float amount;
     int enteredPin;
 
-    printf("\n--- Mobile Recharge ---\n");
-    printf("Enter mobile number (11 digits): ");
+    printf("\n======== Mobile Recharge ========= \n");
+    printf("\nEnter mobile number (11 digits): \n");
     scanf("%s", mobileNumber);
 
-    // Validate number length
     if (strlen(mobileNumber) != 11) {
-        printf("Invalid mobile number! Must be 11 digits.\n");
+        printf("\nError: Invalid mobile number! Must be 11 digits.\n\n");
         return;
     }
 
-    printf("Enter recharge amount: ");
+    printf("\nEnter recharge amount: \n");
     scanf("%f", &amount);
 
     if (amount <= 0) {
-        printf("Invalid amount!\n");
+        printf("\nError: Invalid amount!\n\n");
         return;
     }
 
     if (users[loggedInUserIndex].balance < amount) {
-        printf("Insufficient balance!\n");
+        printf("\nError: Insufficient balance!\n\n");
         return;
     }
 
-    // Ask for PIN
-    printf("Enter your PIN to confirm: ");
+    printf("\nEnter your PIN to confirm: \n");
     scanf("%d", &enteredPin);
 
     if (enteredPin != users[loggedInUserIndex].pin) {
-        printf("Invalid PIN! Recharge cancelled.\n");
+        printf("\nError: Invalid PIN! Recharge cancelled.\n\n");
         return;
     }
 
-    // Deduct balance
     users[loggedInUserIndex].balance -= amount;
 
-    // Save transaction
     if (transactionCount < MAX_TRANSACTIONS) {
         strcpy(transactions[transactionCount].type, "Mobile Recharge");
         transactions[transactionCount].amount = amount;
@@ -219,11 +213,12 @@ void showMobileRechargeInterface() {
         transactionCount++;
     }
 
-    printf("\nRecharge of %.2f to %s successful!\n", amount, mobileNumber);
-    printf("Remaining Balance: %.2f\n", users[loggedInUserIndex].balance);
+    printf("\nTransaction successful!\n");
+    printf("Receiver: %s\n", mobileNumber);
+    printf("Amount: %.2f\n", amount);
+    printf("New Balance: %.2f\n", users[loggedInUserIndex].balance);
+    printf("--------------------------------------\n\n");
 }
-
-
 
 void showSendMoneyInterface() {
     char receiver[12];
@@ -231,28 +226,27 @@ void showSendMoneyInterface() {
     char reference[50];
     int pin;
 
-    printf("\n--- Send Money ---\n\n");
-
-    printf("Enter receiver account number: ");
+    printf("\n========== Send Money ========== \n");
+    printf("\nEnter receiver account number: \n");
     scanf("%s", receiver);
 
-    printf("Enter amount: ");
+    printf("\nEnter amount: \n");
     scanf("%f", &amount);
 
     if (amount <= 0) {
-        printf("\nInvalid amount. Please enter a positive value.\n");
+        printf("\nError: Invalid amount. Enter a positive value.\n\n");
         return;
     }
 
     if (amount > users[loggedInUserIndex].balance) {
-        printf("\nTransaction failed: Insufficient balance.\n");
+        printf("\nError: Insufficient balance.\n\n");
         return;
     }
 
-    printf("Enter reference: ");
+    printf("\nEnter reference: \n");
     scanf("%s", reference);
 
-    printf("Enter PIN to confirm: ");
+    printf("\nEnter PIN to confirm: \n");
     scanf("%d", &pin);
 
     int receiverIndex = -1;
@@ -264,29 +258,30 @@ void showSendMoneyInterface() {
     }
 
     if (receiverIndex == -1) {
-        printf("\nTransaction failed: Invalid receiver account number.\n");
+        printf("\nError: Invalid receiver account number.\n\n");
         return;
     }
 
     if (users[loggedInUserIndex].pin != pin) {
-        printf("\nTransaction failed: Incorrect PIN.\n");
+        printf("\nError: Incorrect PIN.\n\n");
         return;
     }
 
     users[receiverIndex].balance += amount;
     users[loggedInUserIndex].balance -= amount;
 
-    strcpy(transactions[transactionCount].type, "Sent Money");
+    strcpy(transactions[transactionCount].type, "Send Money");
     transactions[transactionCount].amount = amount;
     strcpy(transactions[transactionCount].target, receiver);
     strcpy(transactions[transactionCount].reference, reference);
     transactionCount++;
 
-    printf("\nTransaction successful.\n");
+    printf("\nTransaction successful!\n");
     printf("Receiver: %s\n", receiver);
-    printf("Amount Sent: %.2f\n", amount);
+    printf("Amount: %.2f\n", amount);
     printf("Reference: %s\n", reference);
-    printf("Your New Balance: %.2f\n\n", users[loggedInUserIndex].balance);
+    printf("New Balance: %.2f\n", users[loggedInUserIndex].balance);
+    printf("--------------------------------------\n\n");
 }
 
 void showAddMoneyInterface() {
@@ -294,45 +289,49 @@ void showAddMoneyInterface() {
     float amount;
     int pin;
     char inputNumber[20];
-    int found = 0;
 
-    printf("\n--- Add Money ---\n");
-    printf("Select Source:\n");
-    printf("1. Card to crystalPay\n");
-    printf("2. Bank to crystalPay\n");
-    printf("Enter choice: ");
+    printf("\n========== Add Money ========== \n");
+    printf("\nSelect source:\n");
+    printf("1. Card to Crystal Pay\n");
+    printf("2. Bank to Crystal Pay\n");
+    printf("\nEnter choice: \n");
     scanf("%d", &sourceChoice);
 
-    if(sourceChoice == 1) {
-        printf("Enter card number: ");
-    }else {
-        printf("Enter account number: ");
+    if (sourceChoice < 1 || sourceChoice > 2) {
+        printf("\nError: Invalid source choice.\n\n");
+        return;
     }
+
+    printf("\nEnter %s number: \n", sourceChoice == 1 ? "card" : "account");
     scanf("%s", inputNumber);
-    printf("Enter amount to add: ");
+
+    printf("\nEnter amount to add: \n");
     scanf("%f", &amount);
-    printf("Enter PIN: ");
-    scanf("%d", &pin);
 
     if (amount <= 0) {
-        printf("Invalid amount.\n");
+        printf("\nError: Invalid amount.\n\n");
         return;
     }
 
-    if(sourceChoice > 2 || sourceChoice < 1) {
-        printf("Invalid source choice.\n");
+    printf("\nEnter PIN to confirm: \n");
+    scanf("%d", &pin);
+
+    if (pin != users[loggedInUserIndex].pin) {
+        printf("\nError: Incorrect PIN.\n\n");
         return;
     }
+
     users[loggedInUserIndex].balance += amount;
-    transactions[transactionCount].amount = amount;
     strcpy(transactions[transactionCount].type, "Add Money");
+    transactions[transactionCount].amount = amount;
     strcpy(transactions[transactionCount].target, inputNumber);
     transactionCount++;
 
-    printf("\nTransaction successful.\n");
-    printf("Account Number: %s\n", inputNumber);
-    printf("Amount Added: %.2f\n", amount);
-    printf("Your New Balance: %.2f\n\n", users[loggedInUserIndex].balance);
+    printf("\nTransaction successful!\n");
+    printf("Source: %s\n", inputNumber);
+    printf("Amount: %.2f\n", amount);
+    printf("New Balance: %.2f\n", users[loggedInUserIndex].balance);
+    printf("--------------------------------------\n\n");
 }
 
 void showPaymentInterface() {
@@ -340,28 +339,29 @@ void showPaymentInterface() {
     float amount;
     int pin;
 
-    printf("\n--- Payment to Merchant ---\n");
-    printf("Enter merchant number: ");
+    printf("\n======= Payment to Merchant ======= \n");
+    printf("\nEnter merchant number: \n");
     scanf("%s", merchantNumber);
 
-    printf("Enter amount: ");
+    printf("\nEnter amount: \n");
     scanf("%f", &amount);
-    printf("Enter PIN to confirm: ");
+
+    if (amount <= 0) {
+        printf("\nError: Invalid amount.\n\n");
+        return;
+    }
+
+    if (amount > users[loggedInUserIndex].balance) {
+        printf("\nError: Insufficient balance.\n\n");
+        return;
+    }
+
+    printf("\nEnter PIN to confirm: \n");
     scanf("%d", &pin);
 
     if (pin != users[loggedInUserIndex].pin) {
-        printf("Incorrect PIN. Payment cancelled.\n");
+        printf("\nError: Incorrect PIN. Payment cancelled.\n\n");
         return;
-    }
-
-    if (amount <= 0) {
-        printf("\nTransaction Failed: Invalid amount.\n");
-        return;
-    }
-
-    if(amount > users[loggedInUserIndex].balance) {
-         printf("\nTransaction failed: Insufficient balance.\n");
-         return;
     }
 
     users[loggedInUserIndex].balance -= amount;
@@ -371,10 +371,11 @@ void showPaymentInterface() {
     strcpy(transactions[transactionCount].target, merchantNumber);
     transactionCount++;
 
-    printf("\nPayment successful.\n");
+    printf("\nTransaction successful!\n");
     printf("Receiver: %s\n", merchantNumber);
-    printf("Amount Sent: %.2f\n", amount);
-    printf("Your New Balance: %.2f\n\n", users[loggedInUserIndex].balance);
+    printf("Amount: %.2f\n", amount);
+    printf("New Balance: %.2f\n", users[loggedInUserIndex].balance);
+    printf("--------------------------------------\n\n");
 }
 
 void showCashOutInterface() {
@@ -382,21 +383,23 @@ void showCashOutInterface() {
     float amount;
     int pin;
 
-    printf("\n--- Cash Out ---\n");
-    printf("Enter agent number: ");
+    printf("\n=========== Cash Out =========== \n");
+    printf("\nEnter agent number: \n");
     scanf("%s", agentNumber);
-    printf("Enter amount to cash out: ");
-    scanf("%f", &amount);
-    printf("Enter PIN to confirm: ");
-    scanf("%d", &pin);
 
-    if (pin != users[loggedInUserIndex].pin) {
-        printf("Incorrect PIN. Cash out cancelled.\n");
+    printf("\nEnter amount to cash out: \n");
+    scanf("%f", &amount);
+
+    if (amount <= 0 || amount > users[loggedInUserIndex].balance) {
+        printf("\nError: Invalid amount or insufficient balance.\n\n");
         return;
     }
 
-    if (amount <= 0 || amount > users[loggedInUserIndex].balance) {
-        printf("Invalid amount or insufficient balance.\n");
+    printf("\nEnter PIN to confirm: \n");
+    scanf("%d", &pin);
+
+    if (pin != users[loggedInUserIndex].pin) {
+        printf("\nError: Incorrect PIN. Cash out cancelled.\n\n");
         return;
     }
 
@@ -407,28 +410,28 @@ void showCashOutInterface() {
     strcpy(transactions[transactionCount].target, agentNumber);
     transactionCount++;
 
-    printf("\nCash out successful.\n");
+    printf("\nTransaction successful!\n");
     printf("Receiver: %s\n", agentNumber);
-    printf("Amount Sent: %.2f\n", amount);
-    printf("Your New Balance: %.2f\n\n", users[loggedInUserIndex].balance);
+    printf("Amount: %.2f\n", amount);
+    printf("New Balance: %.2f\n", users[loggedInUserIndex].balance);
+    printf("--------------------------------------\n\n");
 }
 
 void showTransactionInterface() {
+    printf("\n======= Transaction History ======= \n");
     if (transactionCount <= 0) {
-        printf("\nNo transaction history found.\n");
+        printf("\nNo transaction history found.\n\n");
     } else {
-        printf("\n=========== Transaction History ===========\n\n");
-
         for (int i = 0; i < transactionCount; i++) {
-            printf("Transaction #%d\n", i + 1);
-            printf("Type      : %s\n", transactions[i].type);
-            printf("Receiver  : %s\n", transactions[i].target);
-            printf("Amount    : %.2f\n", transactions[i].amount);
-            printf("Reference : %s\n", transactions[i].reference);
-            printf("-------------------------------------------\n");
+            printf("\nTransaction #%d\n", i + 1);
+            printf("Type: %s\n", transactions[i].type);
+            printf("Receiver: %s\n", transactions[i].target);
+            printf("Amount: %.2f\n", transactions[i].amount);
+            printf("Reference: %s\n", transactions[i].reference);
+            printf("--------------------------------------\n");
         }
     }
-
+    printf("\n");
     showLoggedInOptions();
 }
 
@@ -455,14 +458,12 @@ void initializeDummyUsers() {
 
 int main() {
     int choice;
-
     initializeDummyUsers();
-
     while (1) {
-        printf("\n=== Payment Management System ===\n");
+        printf("\n============ Payment System ============ \n");
         printf("1. Login\n");
         printf("0. Exit\n");
-        printf("Enter choice: ");
+        printf("\nEnter choice: \n");
         scanf("%d", &choice);
 
         switch (choice) {
@@ -470,10 +471,10 @@ int main() {
                 showLoginInterface();
                 break;
             case 0:
-                printf("\nExiting program...\n");
+                printf("\nExiting program...\n\n");
                 exit(0);
             default:
-                printf("Invalid choice. Try again.\n\n");
+                printf("\nError: Invalid choice. Try again.\n\n");
         }
     }
     return 0;
