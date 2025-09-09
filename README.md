@@ -14,12 +14,13 @@ This project simulates a simplified **mobile banking dial system** similar to th
 
 - **User Authentication:** Login using an 11-digit phone number and a 4-digit PIN.
 - **Send Money:** Transfer money to other users.
+- **Add Money:** Add money to the account balance.
 - **Mobile Recharge:** Recharge mobile numbers.
 - **Payment:** Make payments to merchants.
 - **Cash Out:** Withdraw money through agents.
-- **My CrystalPay:** View current balance and transaction history.
+- **My CrystalPay:** View current balance.
 - **Reset PIN:** Change the user PIN securely.
-- **Add Money:** Add money to the account balance.
+- **Statement:** View Transaction History.
 - **Logout:** Securely logout from the session.
 
 ---
