@@ -72,7 +72,7 @@ int login(char *number, int pin) {
 void showLoggedInOptions() {
     int choice;
     while (1) {
-        printf("\n============ Payment System ============ \n");
+        printf("\n============ Crystal Pay ============ \n");
         printf("1. Send Money\n");
         printf("2. Add Money\n");
         printf("3. Mobile Recharge\n");
