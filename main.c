@@ -459,7 +459,7 @@ int main() {
     int choice;
     initializeDummyUsers();
     while (1) {
-        printf("\n============ Payment System ============ \n");
+        printf("\n============ Crystal Pay ============ \n");
         printf("1. Login\n");
         printf("0. Exit\n");
         printf("\nEnter choice: \n");
